@@ -1,3 +1,6 @@
+import 'package:cropdisease/homepage.dart';
+import 'package:cropdisease/loginpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Authwrapper extends StatefulWidget {
@@ -10,8 +13,17 @@ class Authwrapper extends StatefulWidget {
 class _AuthwrapperState extends State<Authwrapper> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder <User?>(
-      stream: stream, 
-      builder: builder);
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(body: CircularProgressIndicator(strokeWidth: 5));
+        }
+        if (snapshot.hasData) {
+          return Homepage();
+        }
+        return Loginpage();
+      },
+    );
   }
 }

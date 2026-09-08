@@ -1,5 +1,5 @@
-import 'package:cropdisease/homepage.dart';
 import 'package:cropdisease/registerpage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Loginpage extends StatefulWidget {
@@ -12,6 +12,13 @@ class Loginpage extends StatefulWidget {
 class _LoginpageState extends State<Loginpage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
+  Future<void> login() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+  }
 
   void register() {
     Navigator.push(context, MaterialPageRoute(builder: (_) => Registerpage()));
@@ -176,12 +183,7 @@ class _LoginpageState extends State<Loginpage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (_) => Homepage()),
-                            );
-                          },
+                          onPressed: login,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF2E7D32),
                             foregroundColor: Colors.white,

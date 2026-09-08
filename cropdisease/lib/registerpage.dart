@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Registerpage extends StatefulWidget {
@@ -12,6 +13,14 @@ class _RegisterpageState extends State<Registerpage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  Future<void> register() async {
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailController.text,
+      password: passwordController.text,
+    );
+
+  }
 
   bool obscurePassword = true;
   bool obscureConfirmPassword = true;
@@ -28,7 +37,6 @@ class _RegisterpageState extends State<Registerpage> {
 
             child: Column(
               children: [
-
                 // Logo
                 Container(
                   height: 80,
@@ -37,11 +45,7 @@ class _RegisterpageState extends State<Registerpage> {
                     color: const Color(0xFF2E7D32),
                     borderRadius: BorderRadius.circular(22),
                   ),
-                  child: const Icon(
-                    Icons.eco,
-                    color: Colors.white,
-                    size: 48,
-                  ),
+                  child: const Icon(Icons.eco, color: Colors.white, size: 48),
                 ),
 
                 const SizedBox(height: 18),
@@ -60,10 +64,7 @@ class _RegisterpageState extends State<Registerpage> {
 
                 const Text(
                   "Smart Crop Disease Detection",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
 
                 const SizedBox(height: 28),
@@ -89,7 +90,6 @@ class _RegisterpageState extends State<Registerpage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
                       const Text(
                         "Create Account 🌱",
                         style: TextStyle(
@@ -102,10 +102,7 @@ class _RegisterpageState extends State<Registerpage> {
 
                       const Text(
                         "Join CropCare and protect your crops",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: Colors.grey, fontSize: 14),
                       ),
 
                       const SizedBox(height: 22),
@@ -113,9 +110,7 @@ class _RegisterpageState extends State<Registerpage> {
                       // Name
                       const Text(
                         "Full Name",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
                       const SizedBox(height: 7),
@@ -126,9 +121,7 @@ class _RegisterpageState extends State<Registerpage> {
                         decoration: InputDecoration(
                           hintText: "Enter your name",
 
-                          prefixIcon: const Icon(
-                            Icons.person_outline,
-                          ),
+                          prefixIcon: const Icon(Icons.person_outline),
 
                           filled: true,
                           fillColor: const Color(0xFFF5F7F5),
@@ -145,9 +138,7 @@ class _RegisterpageState extends State<Registerpage> {
                       // Email
                       const Text(
                         "Email",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
                       const SizedBox(height: 7),
@@ -160,9 +151,7 @@ class _RegisterpageState extends State<Registerpage> {
                         decoration: InputDecoration(
                           hintText: "Enter your email",
 
-                          prefixIcon: const Icon(
-                            Icons.email_outlined,
-                          ),
+                          prefixIcon: const Icon(Icons.email_outlined),
 
                           filled: true,
                           fillColor: const Color(0xFFF5F7F5),
@@ -179,9 +168,7 @@ class _RegisterpageState extends State<Registerpage> {
                       // Password
                       const Text(
                         "Password",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
                       const SizedBox(height: 7),
@@ -194,9 +181,7 @@ class _RegisterpageState extends State<Registerpage> {
                         decoration: InputDecoration(
                           hintText: "Create a password",
 
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                          ),
+                          prefixIcon: const Icon(Icons.lock_outline),
 
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -207,8 +192,7 @@ class _RegisterpageState extends State<Registerpage> {
 
                             onPressed: () {
                               setState(() {
-                                obscurePassword =
-                                    !obscurePassword;
+                                obscurePassword = !obscurePassword;
                               });
                             },
                           ),
@@ -228,9 +212,7 @@ class _RegisterpageState extends State<Registerpage> {
                       // Confirm Password
                       const Text(
                         "Confirm Password",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: TextStyle(fontWeight: FontWeight.w600),
                       ),
 
                       const SizedBox(height: 7),
@@ -243,9 +225,7 @@ class _RegisterpageState extends State<Registerpage> {
                         decoration: InputDecoration(
                           hintText: "Confirm your password",
 
-                          prefixIcon: const Icon(
-                            Icons.lock_outline,
-                          ),
+                          prefixIcon: const Icon(Icons.lock_outline),
 
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -280,24 +260,17 @@ class _RegisterpageState extends State<Registerpage> {
                         height: 55,
 
                         child: ElevatedButton(
-                          onPressed: () {
-
-                            // Firebase registration
-                            // code will come here
-
-                          },
+                          onPressed: register,
 
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color(0xFF2E7D32),
+                            backgroundColor: const Color(0xFF2E7D32),
 
                             foregroundColor: Colors.white,
 
                             elevation: 0,
 
                             shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(14),
                             ),
                           ),
 
@@ -315,23 +288,17 @@ class _RegisterpageState extends State<Registerpage> {
 
                       // Login
                       Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
 
                         children: [
-
                           const Text(
                             "Already have an account? ",
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(color: Colors.grey),
                           ),
 
                           TextButton(
                             onPressed: () {
-
                               Navigator.pop(context);
-
                             },
 
                             child: const Text(
@@ -352,25 +319,16 @@ class _RegisterpageState extends State<Registerpage> {
 
                 // Bottom tagline
                 const Row(
-                  mainAxisAlignment:
-                      MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
 
                   children: [
-
-                    Icon(
-                      Icons.agriculture,
-                      size: 18,
-                      color: Color(0xFF689F38),
-                    ),
+                    Icon(Icons.agriculture, size: 18, color: Color(0xFF689F38)),
 
                     SizedBox(width: 7),
 
                     Text(
                       "Healthy Crops • Better Harvests",
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 13,
-                      ),
+                      style: TextStyle(color: Colors.grey, fontSize: 13),
                     ),
                   ],
                 ),
@@ -384,4 +342,3 @@ class _RegisterpageState extends State<Registerpage> {
     );
   }
 }
-
