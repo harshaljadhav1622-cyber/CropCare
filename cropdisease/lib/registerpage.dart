@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,10 @@ class _RegisterpageState extends State<Registerpage> {
       email: emailController.text,
       password: passwordController.text,
     );
-
+    FirebaseFirestore.instance.collection("farmers").add({
+      "name": nameController.text,
+      "email": emailController.text,
+    });
   }
 
   bool obscurePassword = true;

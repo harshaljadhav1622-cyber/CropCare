@@ -1,5 +1,5 @@
-import 'package:cropdisease/homepage.dart';
 import 'package:cropdisease/loginpage.dart';
+import 'package:cropdisease/main_navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class _AuthwrapperState extends State<Authwrapper> {
           return Scaffold(body: CircularProgressIndicator(strokeWidth: 5));
         }
         if (snapshot.hasData) {
-          return Homepage();
+          return const MainNavigation();
         }
         return Loginpage();
       },

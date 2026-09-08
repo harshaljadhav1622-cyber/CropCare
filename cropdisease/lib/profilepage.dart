@@ -1,11 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  // ================= LOGOUT =================
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // ================= APP BAR =================
       appBar: AppBar(
         title: const Text(
           "My Profile",
@@ -14,6 +27,7 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
       ),
 
+      // ================= BODY =================
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
@@ -28,17 +42,68 @@ class ProfilePage extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            // ================= USER NAME =================
-            const Text(
-              "Farmer Name",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+            // ================= USER NAME & EMAIL =================
+            FutureBuilder<QuerySnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection("farmers")
+                  .where(
+                    "email",
+                    isEqualTo: FirebaseAuth.instance.currentUser?.email,
+                  )
+                  .limit(1)
+                  .get(),
 
-            const SizedBox(height: 5),
+              builder: (context, snapshot) {
+                // Loading
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                }
 
-            const Text(
-              "farmer@example.com",
-              style: TextStyle(color: Colors.grey, fontSize: 15),
+                // Error
+                if (snapshot.hasError) {
+                  return const Text(
+                    "Something went wrong",
+                    style: TextStyle(color: Colors.red),
+                  );
+                }
+
+                // Farmer not found
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Text(
+                    "Farmer not found",
+                    style: TextStyle(color: Colors.grey),
+                  );
+                }
+
+                // Get farmer document
+                final farmer = snapshot.data!.docs.first;
+
+                // Get name and email
+                final String name = farmer["name"];
+                final String email = farmer["email"];
+
+                // Display name and email
+                return Column(
+                  children: [
+                    // Farmer Name
+                    Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 5),
+
+                    // Farmer Email
+                    Text(
+                      email,
+                      style: const TextStyle(color: Colors.grey, fontSize: 15),
+                    ),
+                  ],
+                );
+              },
             ),
 
             const SizedBox(height: 30),
@@ -94,18 +159,20 @@ class ProfilePage extends StatelessWidget {
             // ================= LOGOUT BUTTON =================
             SizedBox(
               width: double.infinity,
+
               child: ElevatedButton.icon(
-                onPressed: () {
-                  // TODO:
-                  // Add Firebase logout here
-                },
+                onPressed: logout,
+
                 icon: const Icon(Icons.logout),
+
                 label: const Text(
                   "Logout",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
+
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 15),
+
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
@@ -120,7 +187,7 @@ class ProfilePage extends StatelessWidget {
 
   // ================= PROFILE OPTION =================
 
-  static Widget profileOption({
+  Widget profileOption({
     required IconData icon,
     required String title,
     required VoidCallback onTap,
@@ -133,6 +200,7 @@ class ProfilePage extends StatelessWidget {
 
         leading: CircleAvatar(
           backgroundColor: Colors.green.shade50,
+
           child: Icon(icon, color: Colors.green),
         ),
 
